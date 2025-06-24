@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/flores") // Ruta base para todos los endpoints del controlador
+@RequestMapping("/flor") // Ruta base para todos los endpoints del controlador
 public class florController {
 
     @Autowired
