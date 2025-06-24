@@ -20,44 +20,49 @@ public class florController {
 
     @Autowired
     private FlorServicio florServicio;
-@PostMapping("/add")
-public ResponseEntity<FlorDTO> createFlor(@RequestBody Flor flor) {
-    Flor nuevaFlor = florServicio.crearFlor(flor);
-    FlorDTO nuevaFlorDTO = florServicio.convertToDto(nuevaFlor);
-    return ResponseEntity.status(HttpStatus.CREATED).body(nuevaFlorDTO);
 
-}
-@PutMapping("/update/{id}")
-    public ResponseEntity<String> updateFlor(@PathVariable int id, @RequestBody Flor florActualizada) {
-    try {
-        florServicio.updateFlor(id, florActualizada.getNombreFlor(), florActualizada.getPaisFlor());
-        return ResponseEntity.ok("Flor actualizada exitosamente");
-    } catch (FlorNotFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    @PostMapping("/add")
+    public ResponseEntity<FlorDTO> createFlor(@RequestBody Flor flor) {
+        Flor nuevaFlor = florServicio.crearFlor(flor);
+        FlorDTO nuevaFlorDTO = florServicio.convertToDto(nuevaFlor);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevaFlorDTO);
+
     }
 
-}
-@GetMapping("/getAll")
-public ResponseEntity<List<FlorDTO>> getAllFlor() {
-    List<FlorDTO> flores = florServicio.getAllFlor();
-    return ResponseEntity.ok(flores);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateFlor(@PathVariable int id, @RequestBody Flor florActualizada) {
+        try {
+            florServicio.updateFlor(id, florActualizada.getNombreFlor(), florActualizada.getPaisFlor());
+            return ResponseEntity.ok("Flor actualizada exitosamente");
+        } catch (FlorNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
 
-}
-@GetMapping("/{id}")
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<FlorDTO>> getAllFlor() {
+        List<FlorDTO> flores = florServicio.getAllFlor();
+        return ResponseEntity.ok(flores);
+
+    }
+
+    @GetMapping("/getOne/{id}")
     public ResponseEntity<Flor> searchFlorById(@PathVariable int id) {
-    Optional<Flor> florOptional = florServicio.getFlorById(id);
+        Optional<Flor> florOptional = florServicio.getFlorById(id);
 
-    return florOptional
-            .map(flor -> ResponseEntity.ok().body(flor))  // si la flor existe
-            .orElseGet(() -> ResponseEntity.notFound().build());  //si la flor no existe
+        return florOptional
+                .map(flor -> ResponseEntity.ok().body(flor))  // si la flor existe
+                .orElseGet(() -> ResponseEntity.notFound().build());  //si la flor no existe
 
-}
-@DeleteMapping("/delete/{id}")
+    }
+
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteFlorById(@PathVariable int id) {
-    florServicio.deleteFlorById(id);
-    return ResponseEntity.noContent().build();
+        florServicio.deleteFlorById(id);
+        return ResponseEntity.noContent().build();
 
-}
+    }
 
 
 }
